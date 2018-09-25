@@ -20,6 +20,7 @@ package org.yeastrc.limelight.xml.magnumtpp.main;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStreamReader;
 
 import org.yeastrc.limelight.xml.magnumtpp.constants.Constants;
@@ -111,7 +112,7 @@ public class MainProgram {
 			while ( ( line = br.readLine() ) != null )
 				System.out.println( line );				
 
-		} catch ( Exception e ) {
+		} catch ( IOException e ) {
 			System.out.println( "Error printing help." );
 		}
 	}

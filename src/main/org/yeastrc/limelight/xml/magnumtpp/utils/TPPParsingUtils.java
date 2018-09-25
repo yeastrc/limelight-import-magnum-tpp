@@ -97,12 +97,10 @@ public class TPPParsingUtils {
 		for( AnalysisSummary analysisSummary : msAnalysis.getAnalysisSummary() ) {
 			
 			for( Object o : analysisSummary.getAny() ) {
-			
-				try {
-					InterprophetSummary pps = (InterprophetSummary)o;
-					return true;
 
-				} catch( Throwable t ) { ; }				
+				if( o instanceof InterprophetSummary ) {
+					return true;
+				}
 				
 			}
 		}
