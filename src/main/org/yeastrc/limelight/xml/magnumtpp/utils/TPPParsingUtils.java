@@ -36,12 +36,15 @@ public class TPPParsingUtils {
 	 * @param msAnalysis
 	 * @return
 	 */
-	public static String getCometVersionFromXML( MsmsPipelineAnalysis msAnalysis ) {
+	public static String getMagnumVersionFromXML(MsmsPipelineAnalysis msAnalysis ) {
 		
 		for( MsmsRunSummary runSummary : msAnalysis.getMsmsRunSummary() ) {
 			for( SearchSummary searchSummary : runSummary.getSearchSummary() ) {
 
-				if( searchSummary.getSearchEngine().value().equals( "Comet" ) ) {
+				if( 	searchSummary.getSearchEngine() != null &&
+						searchSummary.getSearchEngine().value() != null &&
+						searchSummary.getSearchEngine().value().equals( "Magnum" ) ) {
+
 					return searchSummary.getSearchEngineVersion();
 				}
 			

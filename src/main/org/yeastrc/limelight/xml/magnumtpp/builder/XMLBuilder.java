@@ -2,6 +2,7 @@ package org.yeastrc.limelight.xml.magnumtpp.builder;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.util.HashMap;
@@ -200,7 +201,7 @@ public class XMLBuilder {
 					PeptideModification xmlModification = new PeptideModification();
 					xmlModifications.getPeptideModification().add( xmlModification );
 
-					xmlModification.setMass( tppReportedPeptide.getMods().get( position ).stripTrailingZeros().setScale( 0 ) );
+					xmlModification.setMass( tppReportedPeptide.getMods().get( position ).stripTrailingZeros().setScale( 0, RoundingMode.HALF_UP ) );
 					xmlModification.setPosition( BigInteger.valueOf( position ) );
 				}
 			}
