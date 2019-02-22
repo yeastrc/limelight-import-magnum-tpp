@@ -35,6 +35,7 @@ public class XMLBuilder {
 		LimelightInput limelightInputRoot = new LimelightInput();
 
 		limelightInputRoot.setFastaFilename( conversionParameters.getFastaFile().getName() );
+		limelightInputRoot.setName( conversionParameters.getPepXMLFile().getName() );
 		
 		// add in the conversion program (this program) information
 		ConversionProgramBuilder.createInstance().buildConversionProgramSection( limelightInputRoot, conversionParameters);
