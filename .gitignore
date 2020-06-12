@@ -19,9 +19,10 @@
 hs_err_pid*
 /bin/
 
-.classpath
 .project
+.classpath
 /deploy/
-/resources/
 /classes/
 /.idea/
+/.gradle/
+/build/

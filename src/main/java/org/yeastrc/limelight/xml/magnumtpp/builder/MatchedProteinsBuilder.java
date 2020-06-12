@@ -12,17 +12,18 @@ import org.yeastrc.limelight.limelight_import.api.xml_dto.MatchedProtein;
 import org.yeastrc.limelight.limelight_import.api.xml_dto.MatchedProteinLabel;
 import org.yeastrc.limelight.limelight_import.api.xml_dto.MatchedProteins;
 import org.yeastrc.limelight.xml.magnumtpp.objects.TPPReportedPeptide;
-import org.yeastrc.fasta.FASTAEntry;
-import org.yeastrc.fasta.FASTAHeader;
-import org.yeastrc.fasta.FASTAReader;
+import org.yeastrc.proteomics.fasta.FASTAEntry;
+import org.yeastrc.proteomics.fasta.FASTAFileParser;
+import org.yeastrc.proteomics.fasta.FASTAFileParserFactory;
+import org.yeastrc.proteomics.fasta.FASTAHeader;
 
 
 /**
  * Build the MatchedProteins section of the limelight XML docs. This is done by finding all proteins in the FASTA
- * file that contains any of the peptide sequences found in the experiment. 
- * 
+ * file that contains any of the peptide sequences found in the experiment.
+ *
  * This is generalized enough to be usable by any pipeline
- * 
+ *
  * @author mriffle
  *
  */
@@ -130,15 +131,12 @@ public class MatchedProteinsBuilder {
 
 		Map<String, Collection<FastaProteinAnnotation>> proteinAnnotations = new HashMap<>();
 
-		FASTAReader fastaReader = null;
+		try ( FASTAFileParser parser = FASTAFileParserFactory.getInstance().getFASTAFileParser( fastaFile ) ) {
 
-		try {
-
-			fastaReader = FASTAReader.getInstance( fastaFile );
 			int count = 0;
 			System.err.println( "" );
 
-			for( FASTAEntry entry = fastaReader.readNext(); entry != null; entry = fastaReader.readNext() ) {
+			for (FASTAEntry entry = parser.getNextEntry(); entry != null; entry = parser.getNextEntry() ) {
 
 				count++;
 				boolean foundPeptideForFASTAEntry = false;
@@ -208,11 +206,6 @@ public class MatchedProteinsBuilder {
 			System.err.print( "\n" );
 
 
-		} finally {
-			if( fastaReader != null ) {
-				fastaReader.close();
-				fastaReader = null;
-			}
 		}
 
 		return proteinAnnotations;
