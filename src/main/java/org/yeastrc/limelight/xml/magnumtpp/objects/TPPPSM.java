@@ -22,7 +22,17 @@ public class TPPPSM {
 	private BigDecimal retentionTime;
 	
 	private String peptideSequence;
-	
+
+	private OpenModification openModification;
+
+	public OpenModification getOpenModification() {
+		return openModification;
+	}
+
+	public void setOpenModification(OpenModification openModification) {
+		this.openModification = openModification;
+	}
+
 	private Map<Integer,BigDecimal> modifications;
 	
 	private BigDecimal peptideProphetFDR;

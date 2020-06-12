@@ -187,10 +187,6 @@ public class XMLBuilder {
 			
 			xmlReportedPeptide.setReportedPeptideString( tppReportedPeptide.getReportedPeptideString() );
 			xmlReportedPeptide.setSequence( tppReportedPeptide.getNakedPeptide() );
-			
-			// add in the filterable peptide annotations (e.g., q-value)
-			ReportedPeptideAnnotations xmlReportedPeptideAnnotations = new ReportedPeptideAnnotations();
-			xmlReportedPeptide.setReportedPeptideAnnotations( xmlReportedPeptideAnnotations );
 
 			// add in the mods for this peptide
 			if( tppReportedPeptide.getMods() != null && tppReportedPeptide.getMods().keySet().size() > 0 ) {
@@ -326,18 +322,16 @@ public class XMLBuilder {
 					
 				}
 
-				// add in the mods for this psm
-				if( psm.getModifications() != null && psm.getModifications().keySet().size() > 0 ) {
+				// add in open mod
+				if(psm.getOpenModification() != null) {
+					PsmOpenModification xmlPsmOpenModifcation = new PsmOpenModification();
+					xmlPsm.setPsmOpenModification( xmlPsmOpenModifcation );
+					xmlPsmOpenModifcation.setMass(psm.getOpenModification().getMass());
 
-					PsmModifications xmlPSMModifications = new PsmModifications();
-					xmlPsm.setPsmModifications( xmlPSMModifications );
-
-					for( int position : psm.getModifications().keySet() ) {
-						PsmModification xmlPSMModification = new PsmModification();
-						xmlPSMModifications.getPsmModification().add( xmlPSMModification );
-
-						xmlPSMModification.setMass( psm.getModifications().get( position ) );
-						xmlPSMModification.setPosition( new BigInteger( String.valueOf( position ) ) );
+					for(int position : psm.getOpenModification().getPositions()) {
+						PsmOpenModificationPosition xmlPsmOpenModifcationPosition = new PsmOpenModificationPosition();
+						xmlPsmOpenModifcation.getPsmOpenModificationPosition().add(xmlPsmOpenModifcationPosition);
+						xmlPsmOpenModifcationPosition.setPosition(BigInteger.valueOf(position));
 					}
 				}
 				

@@ -4,12 +4,15 @@ import static java.lang.Math.toIntExact;
 
 import java.io.File;
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 
+import org.yeastrc.limelight.xml.magnumtpp.objects.OpenModification;
 import org.yeastrc.limelight.xml.magnumtpp.objects.TPPPSM;
 
 import net.systemsbiology.regis_web.pepxml.AltProteinDataType;
@@ -233,7 +236,8 @@ public class TPPParsingUtils {
 		// this will set this to null if this was not an iProphet run
 		psm.setInterProphetProbability( getInterProphetProbabilityForSearchHit( searchHit ) );
 
-		
+		psm.setOpenModification(getOpenModificationForSearchHit(searchHit));
+
 		try {
 			psm.setModifications( getModificationsForSearchHit( searchHit ) );
 		} catch( Throwable t ) {
@@ -311,6 +315,33 @@ public class TPPParsingUtils {
 
 
 	/**
+	 * Get open modification for search hit, if any
+	 *
+	 * @param searchHit
+	 * @return The OpenModification, null if none was found
+	 */
+	private static OpenModification getOpenModificationForSearchHit(SearchHit searchHit ) {
+
+		ModInfoDataType mofo = searchHit.getModificationInfo();
+		if( mofo != null ) {
+			for( ModAminoacidMass mod : mofo.getModAminoacidMass() ) {
+
+				if(isOpenMod(mod)) {
+					BigDecimal modMass = BigDecimal.valueOf( mod.getVariable() );
+					int position = mod.getPosition().intValueExact();
+
+					Collection<Integer> positions = new HashSet<>();
+					positions.add(position);
+
+					return new OpenModification(modMass, positions);
+				}
+			}
+		}
+
+		return null;
+	}
+
+	/**
 	 * Get the requested score from the searchHit JAXB object
 	 *
 	 * @param searchHit
@@ -344,7 +375,17 @@ public class TPPParsingUtils {
 		ModInfoDataType mofo = searchHit.getModificationInfo();
 		if( mofo != null ) {
 			for( ModAminoacidMass mod : mofo.getModAminoacidMass() ) {
-				
+
+				// skip static mods
+				if( mod.getStatic() != null ) {
+					continue;
+				}
+
+				// skip open mods
+				if(isOpenMod(mod)) {
+					continue;
+				}
+
 				if( mod.getVariable() != null ) {
 					modMap.put( mod.getPosition().intValueExact(), BigDecimal.valueOf( mod.getVariable() ) );
 				}
@@ -353,6 +394,17 @@ public class TPPParsingUtils {
 		
 		return modMap;
 	}
+
+	/**
+	 * Return true if the mod is an open mod
+	 *
+	 * @param xmlModAminoAcidMass
+	 * @return
+	 */
+	private static boolean isOpenMod(ModAminoacidMass xmlModAminoAcidMass) {
+		return xmlModAminoAcidMass.getSource().equals("adduct");
+	}
+
 	
 	
 }
