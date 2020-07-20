@@ -20,7 +20,39 @@ public class TPPPSM {
 	private BigDecimal precursorNeutralMass;
 	private int charge;
 	private BigDecimal retentionTime;
-	
+
+	@Override
+	public String toString() {
+		return "TPPPSM{" +
+				"xCorr=" + xCorr +
+				", deltaCn=" + deltaCn +
+				", eValue=" + eValue +
+				", ppmError=" + ppmError +
+				", peptideProphetProbability=" + peptideProphetProbability +
+				", interProphetProbability=" + interProphetProbability +
+				", hitRank=" + hitRank +
+				", scanNumber=" + scanNumber +
+				", precursorNeutralMass=" + precursorNeutralMass +
+				", charge=" + charge +
+				", retentionTime=" + retentionTime +
+				", massDiff=" + massDiff +
+				", peptideSequence='" + peptideSequence + '\'' +
+				", modifications=" + modifications +
+				", peptideProphetFDR=" + peptideProphetFDR +
+				", interProphetFDR=" + interProphetFDR +
+				'}';
+	}
+
+	private BigDecimal massDiff;
+
+	public BigDecimal getMassDiff() {
+		return massDiff;
+	}
+
+	public void setMassDiff(BigDecimal massDiff) {
+		this.massDiff = massDiff;
+	}
+
 	private String peptideSequence;
 	
 	private Map<Integer,BigDecimal> modifications;

@@ -18,7 +18,8 @@ public class PSMAnnotationTypes {
 	public static final String MAGNUM_ANNOTATION_TYPE_SCORE = "Score";
 	public static final String MAGNUM_ANNOTATION_TYPE_DSCORE = "dScore";
 	public static final String MAGNUM_ANNOTATION_TYPE_PPMERROR = "PPM Error";
-	
+	public static final String MAGNUM_ANNOTATION_TYPE_MASSDIFF = "Mass Diff";
+
 	// PeptideProphet scores
 	public static final String PPROPHET_ANNOTATION_TYPE_SCORE = "Probability Score";
 	public static final String PPROPHET_ANNOTATION_TYPE_FDR = "Calculated FDR";
@@ -64,6 +65,15 @@ public class PSMAnnotationTypes {
 				type.setName( MAGNUM_ANNOTATION_TYPE_PPMERROR );
 				type.setDescription( "PPM Error, as calculated by " + Constants.PROGRAM_NAME_MAGNUM );
 				type.setFilterDirection( FilterDirectionType.ABOVE );
+
+				types.add( type );
+			}
+
+			{
+				FilterablePsmAnnotationType type = new FilterablePsmAnnotationType();
+				type.setName( MAGNUM_ANNOTATION_TYPE_MASSDIFF );
+				type.setDescription( "Difference between observed mass and predicted mass." );
+				type.setFilterDirection( FilterDirectionType.BELOW );
 
 				types.add( type );
 			}

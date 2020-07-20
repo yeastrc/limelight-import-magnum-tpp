@@ -215,6 +215,7 @@ public class TPPParsingUtils {
 		psm.setScanNumber( scanNumber );
 		psm.setPrecursorNeutralMass( obsMass );
 		psm.setRetentionTime( retentionTime );
+		psm.setMassDiff(searchHit.getMassdiff());
 		
 		psm.setPeptideSequence( searchHit.getPeptide() );
 		
