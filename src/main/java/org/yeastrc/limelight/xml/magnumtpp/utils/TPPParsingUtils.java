@@ -225,6 +225,7 @@ public class TPPParsingUtils {
 		psm.setDeltaCn( getScoreForType( searchHit, "delta_score" ) );
 		psm.seteValue( getScoreForType( searchHit, "e_value" ) );
 		psm.setPpmError( getScoreForType( searchHit, "ppm_error" ) );
+		psm.setMassDiff(searchHit.getMassdiff());
 
 		psm.setPeptideProphetProbability( getPeptideProphetProbabilityForSearchHit( searchHit ) );
 		

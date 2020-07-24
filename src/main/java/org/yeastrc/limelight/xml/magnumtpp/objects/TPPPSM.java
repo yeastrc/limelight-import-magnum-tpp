@@ -9,7 +9,39 @@ public class TPPPSM {
 	private BigDecimal deltaCn;
 	private BigDecimal eValue;
 	private BigDecimal ppmError;
-	
+	private BigDecimal massDiff;
+
+	@Override
+	public String toString() {
+		return "TPPPSM{" +
+				"xCorr=" + xCorr +
+				", deltaCn=" + deltaCn +
+				", eValue=" + eValue +
+				", ppmError=" + ppmError +
+				", massDiff=" + massDiff +
+				", peptideProphetProbability=" + peptideProphetProbability +
+				", interProphetProbability=" + interProphetProbability +
+				", hitRank=" + hitRank +
+				", scanNumber=" + scanNumber +
+				", precursorNeutralMass=" + precursorNeutralMass +
+				", charge=" + charge +
+				", retentionTime=" + retentionTime +
+				", peptideSequence='" + peptideSequence + '\'' +
+				", openModification=" + openModification +
+				", modifications=" + modifications +
+				", peptideProphetFDR=" + peptideProphetFDR +
+				", interProphetFDR=" + interProphetFDR +
+				'}';
+	}
+
+	public BigDecimal getMassDiff() {
+		return massDiff;
+	}
+
+	public void setMassDiff(BigDecimal massDiff) {
+		this.massDiff = massDiff;
+	}
+
 	private BigDecimal peptideProphetProbability;
 	private BigDecimal interProphetProbability;
 	

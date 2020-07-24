@@ -258,6 +258,14 @@ public class XMLBuilder {
 					xmlFilterablePsmAnnotation.setSearchProgram( Constants.PROGRAM_NAME_MAGNUM );
 					xmlFilterablePsmAnnotation.setValue( psm.getPpmError() );
 				}
+				{
+					FilterablePsmAnnotation xmlFilterablePsmAnnotation = new FilterablePsmAnnotation();
+					xmlFilterablePsmAnnotations.getFilterablePsmAnnotation().add( xmlFilterablePsmAnnotation );
+
+					xmlFilterablePsmAnnotation.setAnnotationName( PSMAnnotationTypes.MAGNUM_ANNOTATION_TYPE_MASSDIFF );
+					xmlFilterablePsmAnnotation.setSearchProgram( Constants.PROGRAM_NAME_MAGNUM );
+					xmlFilterablePsmAnnotation.setValue( psm.getMassDiff() );
+				}
 
 
 				// handle peptide prophet scores
