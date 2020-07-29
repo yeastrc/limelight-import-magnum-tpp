@@ -321,25 +321,37 @@ public class TPPParsingUtils {
 	 * @param searchHit
 	 * @return The OpenModification, null if none was found
 	 */
-	private static OpenModification getOpenModificationForSearchHit(SearchHit searchHit ) {
+	private static OpenModification getOpenModificationForSearchHit(SearchHit searchHit ) throws Exception {
 
 		ModInfoDataType mofo = searchHit.getModificationInfo();
+		OpenModification openMod = null;
 		if( mofo != null ) {
 			for( ModAminoacidMass mod : mofo.getModAminoacidMass() ) {
 
 				if(isOpenMod(mod)) {
+
+					// ensure we're not getting more than one open mod reported
+					if(openMod != null) {
+						throw new Exception("Got more than one open mod for searchHit (peptide: " + searchHit.getPeptide() );
+					}
+
 					BigDecimal modMass = BigDecimal.valueOf( mod.getVariable() );
 					int position = mod.getPosition().intValueExact();
 
 					Collection<Integer> positions = new HashSet<>();
 					positions.add(position);
 
-					return new OpenModification(modMass, positions);
+					openMod = new OpenModification(modMass, positions);
 				}
 			}
 		}
 
-		return null;
+		if( openMod == null) {
+			BigDecimal massDiff = searchHit.getMassdiff();
+			openMod = new OpenModification(massDiff, null);
+		}
+
+		return openMod;
 	}
 
 	/**
