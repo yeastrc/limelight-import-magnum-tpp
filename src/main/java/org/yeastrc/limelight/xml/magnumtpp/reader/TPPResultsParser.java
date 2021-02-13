@@ -70,7 +70,9 @@ public class TPPResultsParser {
 				int charge = TPPParsingUtils.getChargeFromSpectrumQuery( spectrumQuery );
 				int scanNumber = TPPParsingUtils.getScanNumberFromSpectrumQuery( spectrumQuery );
 				BigDecimal neutralMass = TPPParsingUtils.getNeutralMassFromSpectrumQuery( spectrumQuery );
-				BigDecimal retentionTime = TPPParsingUtils.getRetentionTimeFromSpectrumQuery( spectrumQuery );
+
+				// magnum reports retention time in minutes, convert to seconds
+				BigDecimal retentionTime = BigDecimal.valueOf( TPPParsingUtils.getRetentionTimeFromSpectrumQuery( spectrumQuery ).doubleValue() * 60 );
 				
 				for( SearchResult searchResult : spectrumQuery.getSearchResult() ) {
 					for( SearchHit searchHit : searchResult.getSearchHit() ) {
