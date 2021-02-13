@@ -6,5 +6,5 @@ open modifications to limelight XML suitable for import into limelight.
 
 How To Run
 -------------
-1. Download the [latest release](https://github.com/yeastrc/limelight-import-msfragger-tsv/releases).
-2. Run the program ``java -jar msFragger2LimelightXML.jar`` with no arguments to see the possible parameters. Requires Java 8 or higher.
+1. Download the [latest release](https://github.com/yeastrc/limelight-import-magnum-tpp/releases).
+2. Run the program ``java -jar magnumTPP2LimelightXML.jar`` with no arguments to see the possible parameters. Requires Java 8 or higher.
