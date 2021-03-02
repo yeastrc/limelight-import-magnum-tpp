@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.yeastrc.limelight.limelight_import.api.xml_dto.*;
-import org.yeastrc.limelight.limelight_import.api.xml_dto.ReportedPeptide.ReportedPeptideAnnotations;
 import org.yeastrc.limelight.limelight_import.api.xml_dto.SearchProgram.PsmAnnotationTypes;
 import org.yeastrc.limelight.limelight_import.create_import_file_from_java_objects.main.CreateImportFileFromJavaObjectsMain;
 import org.yeastrc.limelight.xml.magnumtpp.annotation.PSMAnnotationTypeSortOrder;
@@ -234,7 +233,7 @@ public class XMLBuilder {
 
 					xmlFilterablePsmAnnotation.setAnnotationName( PSMAnnotationTypes.MAGNUM_ANNOTATION_TYPE_DSCORE );
 					xmlFilterablePsmAnnotation.setSearchProgram( Constants.PROGRAM_NAME_MAGNUM );
-					xmlFilterablePsmAnnotation.setValue( psm.getDeltaCn() );
+					xmlFilterablePsmAnnotation.setValue( psm.getdScore() );
 				}
 
 				{
@@ -249,9 +248,9 @@ public class XMLBuilder {
 					FilterablePsmAnnotation xmlFilterablePsmAnnotation = new FilterablePsmAnnotation();
 					xmlFilterablePsmAnnotations.getFilterablePsmAnnotation().add( xmlFilterablePsmAnnotation );
 
-					xmlFilterablePsmAnnotation.setAnnotationName( PSMAnnotationTypes.MAGNUM_ANNOTATION_TYPE_SCORE );
+					xmlFilterablePsmAnnotation.setAnnotationName( PSMAnnotationTypes.MAGNUM_ANNOTATION_TYPE_MSCORE );
 					xmlFilterablePsmAnnotation.setSearchProgram( Constants.PROGRAM_NAME_MAGNUM );
-					xmlFilterablePsmAnnotation.setValue( psm.getxCorr() );
+					xmlFilterablePsmAnnotation.setValue( psm.getmScore() );
 				}
 				{
 					FilterablePsmAnnotation xmlFilterablePsmAnnotation = new FilterablePsmAnnotation();
@@ -345,6 +344,20 @@ public class XMLBuilder {
 							xmlPsmOpenModifcation.getPsmOpenModificationPosition().add(xmlPsmOpenModifcationPosition);
 							xmlPsmOpenModifcationPosition.setPosition(BigInteger.valueOf(position));
 						}
+					}
+				}
+
+				// add in any reporter ions for this psm
+				if( psm.getReporterIons() != null && psm.getReporterIons().size() > 0 ) {
+
+					ReporterIons xReporterIons = new ReporterIons();
+					xmlPsm.setReporterIons( xReporterIons );
+
+					for( BigDecimal ri : psm.getReporterIons() ) {
+						ReporterIon xReporterIon = new ReporterIon();
+						xReporterIons.getReporterIon().add( xReporterIon );
+
+						xReporterIon.setMass( ri );
 					}
 				}
 				

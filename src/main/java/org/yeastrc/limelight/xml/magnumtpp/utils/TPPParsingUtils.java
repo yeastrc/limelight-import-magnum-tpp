@@ -12,6 +12,7 @@ import java.util.Map;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 
+import org.yeastrc.limelight.xml.magnumtpp.constants.MagnumConstants;
 import org.yeastrc.limelight.xml.magnumtpp.objects.OpenModification;
 import org.yeastrc.limelight.xml.magnumtpp.objects.TPPPSM;
 
@@ -220,12 +221,15 @@ public class TPPParsingUtils {
 		psm.setRetentionTime( retentionTime );
 		
 		psm.setPeptideSequence( searchHit.getPeptide() );
-		
-		psm.setxCorr( getScoreForType( searchHit, "magnum_score" ) );
-		psm.setDeltaCn( getScoreForType( searchHit, "delta_score" ) );
-		psm.seteValue( getScoreForType( searchHit, "e_value" ) );
-		psm.setPpmError( getScoreForType( searchHit, "ppm_error" ) );
+
+		psm.setmScore( getScoreForType( searchHit, MagnumConstants.PSM_SCORE_MAGNUM_SCORE ) );
+		psm.setdScore( getScoreForType( searchHit, MagnumConstants.PSM_SCORE_DELTA_SCORE ) );
+		psm.setPpmError( getScoreForType( searchHit, MagnumConstants.PSM_SCORE_PPM_ERROR ) );
+		psm.seteValue( getScoreForType( searchHit, MagnumConstants.PSM_SCORE_E_VALUE ) );
 		psm.setMassDiff(searchHit.getMassdiff());
+
+		psm.setReporterIons( getReporterIonsForSearchHit( searchHit ) );
+
 
 		psm.setPeptideProphetProbability( getPeptideProphetProbabilityForSearchHit( searchHit ) );
 		
@@ -352,6 +356,22 @@ public class TPPParsingUtils {
 		}
 
 		return openMod;
+	}
+
+	private static Collection<BigDecimal> getReporterIonsForSearchHit( SearchHit searchHit ) throws Throwable {
+
+		Collection<BigDecimal> reporterIons = new HashSet<>();
+
+		for( NameValueType searchScore : searchHit.getSearchScore() ) {
+			if( searchScore.getName().equals( MagnumConstants.PSM_SCORE_REPORTER_ION ) ) {
+
+				String reportedReporterIon = searchScore.getValueAttribute();
+				reporterIons.add( new BigDecimal( reportedReporterIon ) );
+
+			}
+		}
+
+		return reporterIons;
 	}
 
 	/**

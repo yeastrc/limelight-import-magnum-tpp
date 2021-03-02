@@ -1,27 +1,30 @@
 package org.yeastrc.limelight.xml.magnumtpp.objects;
 
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.Map;
 
 public class TPPPSM {
 
-	private BigDecimal xCorr;
-	private BigDecimal deltaCn;
+	private BigDecimal mScore;
+	private BigDecimal dScore;
 	private BigDecimal eValue;
 	private BigDecimal ppmError;
 	private BigDecimal massDiff;
+	private Collection<BigDecimal> reporterIons;
+
 
 	@Override
 	public String toString() {
 		return "TPPPSM{" +
-				"xCorr=" + xCorr +
-				", deltaCn=" + deltaCn +
+				"mScore=" + mScore +
+				", dScore=" + dScore +
 				", eValue=" + eValue +
 				", ppmError=" + ppmError +
 				", massDiff=" + massDiff +
+				", reporterIons=" + reporterIons +
 				", peptideProphetProbability=" + peptideProphetProbability +
 				", interProphetProbability=" + interProphetProbability +
-				", hitRank=" + hitRank +
 				", scanNumber=" + scanNumber +
 				", precursorNeutralMass=" + precursorNeutralMass +
 				", charge=" + charge +
@@ -29,8 +32,6 @@ public class TPPPSM {
 				", peptideSequence='" + peptideSequence + '\'' +
 				", openModification=" + openModification +
 				", modifications=" + modifications +
-				", peptideProphetFDR=" + peptideProphetFDR +
-				", interProphetFDR=" + interProphetFDR +
 				'}';
 	}
 
@@ -44,9 +45,6 @@ public class TPPPSM {
 
 	private BigDecimal peptideProphetProbability;
 	private BigDecimal interProphetProbability;
-	
-	private int hitRank;
-	
 	
 	private int scanNumber;
 	private BigDecimal precursorNeutralMass;
@@ -66,11 +64,16 @@ public class TPPPSM {
 	}
 
 	private Map<Integer,BigDecimal> modifications;
-	
-	private BigDecimal peptideProphetFDR;
-	private BigDecimal interProphetFDR;
 
-    public BigDecimal getPpmError() {
+	public Collection<BigDecimal> getReporterIons() {
+		return reporterIons;
+	}
+
+	public void setReporterIons(Collection<BigDecimal> reporterIons) {
+		this.reporterIons = reporterIons;
+	}
+
+	public BigDecimal getPpmError() {
         return ppmError;
     }
 
@@ -78,20 +81,20 @@ public class TPPPSM {
         this.ppmError = ppmError;
     }
 
-    public BigDecimal getxCorr() {
-		return xCorr;
+    public BigDecimal getmScore() {
+		return mScore;
 	}
 
-	public void setxCorr(BigDecimal xCorr) {
-		this.xCorr = xCorr;
+	public void setmScore(BigDecimal mScore) {
+		this.mScore = mScore;
 	}
 
-	public BigDecimal getDeltaCn() {
-		return deltaCn;
+	public BigDecimal getdScore() {
+		return dScore;
 	}
 
-	public void setDeltaCn(BigDecimal deltaCn) {
-		this.deltaCn = deltaCn;
+	public void setdScore(BigDecimal dScore) {
+		this.dScore = dScore;
 	}
 
 	public BigDecimal geteValue() {
@@ -118,13 +121,6 @@ public class TPPPSM {
 		this.interProphetProbability = interProphetProbability;
 	}
 
-	public int getHitRank() {
-		return hitRank;
-	}
-
-	public void setHitRank(int hitRank) {
-		this.hitRank = hitRank;
-	}
 
 	public int getScanNumber() {
 		return scanNumber;
@@ -174,19 +170,4 @@ public class TPPPSM {
 		this.modifications = modifications;
 	}
 
-	public BigDecimal getPeptideProphetFDR() {
-		return peptideProphetFDR;
-	}
-
-	public void setPeptideProphetFDR(BigDecimal peptideProphetFDR) {
-		this.peptideProphetFDR = peptideProphetFDR;
-	}
-
-	public BigDecimal getInterProphetFDR() {
-		return interProphetFDR;
-	}
-
-	public void setInterProphetFDR(BigDecimal interProphetFDR) {
-		this.interProphetFDR = interProphetFDR;
-	}
 }
