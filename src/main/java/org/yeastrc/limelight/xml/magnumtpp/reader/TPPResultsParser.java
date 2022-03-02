@@ -71,8 +71,7 @@ public class TPPResultsParser {
 				int scanNumber = TPPParsingUtils.getScanNumberFromSpectrumQuery( spectrumQuery );
 				BigDecimal neutralMass = TPPParsingUtils.getNeutralMassFromSpectrumQuery( spectrumQuery );
 
-				// magnum reports retention time in minutes, convert to seconds
-				BigDecimal retentionTime = BigDecimal.valueOf( TPPParsingUtils.getRetentionTimeFromSpectrumQuery( spectrumQuery ).doubleValue() * 60 );
+				BigDecimal retentionTime = BigDecimal.valueOf( TPPParsingUtils.getRetentionTimeFromSpectrumQuery( spectrumQuery ).doubleValue() );
 				
 				for( SearchResult searchResult : spectrumQuery.getSearchResult() ) {
 					for( SearchHit searchHit : searchResult.getSearchHit() ) {
