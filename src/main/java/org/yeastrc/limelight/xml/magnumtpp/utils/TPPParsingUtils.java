@@ -214,40 +214,46 @@ public class TPPParsingUtils {
 			BigDecimal retentionTime ) throws Throwable {
 				
 		TPPPSM psm = new TPPPSM();
-		
-		psm.setCharge( charge );
-		psm.setScanNumber( scanNumber );
-		psm.setPrecursorNeutralMass( obsMass );
-		psm.setRetentionTime( retentionTime );
-		
-		psm.setPeptideSequence( searchHit.getPeptide() );
 
-		psm.setmScore( getScoreForType( searchHit, MagnumConstants.PSM_SCORE_MAGNUM_SCORE ) );
-		psm.setdScore( getScoreForType( searchHit, MagnumConstants.PSM_SCORE_DELTA_SCORE ) );
-		psm.setPpmError( getScoreForType( searchHit, MagnumConstants.PSM_SCORE_PPM_ERROR ) );
-		psm.seteValue( getScoreForType( searchHit, MagnumConstants.PSM_SCORE_E_VALUE ) );
-		psm.setMassDiff(searchHit.getMassdiff());
+		try {
+			psm.setCharge(charge);
+			psm.setScanNumber(scanNumber);
+			psm.setPrecursorNeutralMass(obsMass);
+			psm.setRetentionTime(retentionTime);
 
-		psm.setReporterIons( getReporterIonsForSearchHit( searchHit ) );
+			psm.setPeptideSequence(searchHit.getPeptide());
+
+			psm.setmScore(getScoreForType(searchHit, MagnumConstants.PSM_SCORE_MAGNUM_SCORE));
+			psm.setdScore(getScoreForType(searchHit, MagnumConstants.PSM_SCORE_DELTA_SCORE));
+			psm.setPpmError(getScoreForType(searchHit, MagnumConstants.PSM_SCORE_PPM_ERROR));
+			psm.seteValue(getScoreForType(searchHit, MagnumConstants.PSM_SCORE_E_VALUE));
+			psm.setMassDiff(searchHit.getMassdiff());
+
+			psm.setReporterIons(getReporterIonsForSearchHit(searchHit));
 
 
-		psm.setPeptideProphetProbability( getPeptideProphetProbabilityForSearchHit( searchHit ) );
-		
-		
-		if( psm.getPeptideProphetProbability() == null ) {
-			return null;
+			psm.setPeptideProphetProbability(getPeptideProphetProbabilityForSearchHit(searchHit));
+
+
+			if (psm.getPeptideProphetProbability() == null) {
+				return null;
+			}
+
+			// this will set this to null if this was not an iProphet run
+			psm.setInterProphetProbability(getInterProphetProbabilityForSearchHit(searchHit));
+
+			psm.setOpenModification(getOpenModificationForSearchHit(searchHit));
+		} catch(Throwable t) {
+			System.err.println("Error parsing psm: " + psm);
+			throw t;
 		}
-		
-		// this will set this to null if this was not an iProphet run
-		psm.setInterProphetProbability( getInterProphetProbabilityForSearchHit( searchHit ) );
-
-		psm.setOpenModification(getOpenModificationForSearchHit(searchHit));
 
 		try {
 			psm.setModifications( getModificationsForSearchHit( searchHit ) );
 		} catch( Throwable t ) {
 			
 			System.err.println( "Error getting mods for PSM. Error was: " + t.getMessage() );
+			System.err.println( "psm: " + psm);
 			throw t;
 		}
 		
