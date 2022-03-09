@@ -104,7 +104,7 @@ public class ConversionParameters {
 	private File limelightXMLOutputFile;
 	private File pepXMLFile;
 	private ConversionProgramInfo conversionProgramInfo;
-	private Boolean importDecoys = false;
+	private boolean importDecoys = false;
 	private String independentDecoyPrefix;
 	
 }

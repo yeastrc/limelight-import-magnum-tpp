@@ -395,6 +395,16 @@ public class XMLBuilder {
 				conversionParameters.getIndependentDecoyPrefix() != null,
 				conversionParameters.getIndependentDecoyPrefix()
 		);
+
+		// add in the fasta file statistics, if necessary
+		if(conversionParameters.getIndependentDecoyPrefix() != null) {
+			FastaFileStatisticsBuilder.getInstance().buildFastaFileStatistics(
+					limelightInputRoot,
+					conversionParameters.getFastaFile(),
+					magnumParameters.getDecoyPrefix(),
+					conversionParameters.getIndependentDecoyPrefix()
+			);
+		}
 		
 		
 		// add in the config file(s)

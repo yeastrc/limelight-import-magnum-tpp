@@ -52,10 +52,10 @@ public class MainProgram implements Runnable {
 	@CommandLine.Option(names = { "-o", "--out-file" }, required = true, description = "Full path to use for the Limelight XML output file (including file name).")
 	private File outFile;
 
-	@CommandLine.Option(names = { "-d", "--import-decoys" }, required = true, description = "If present, decoys will be included in the Limelight XML output.")
+	@CommandLine.Option(names = { "-d", "--import-decoys" }, required = false, description = "If present, decoys will be included in the Limelight XML output.")
 	private boolean importDecoys = false;
 
-	@CommandLine.Option(names = { "-i", "--independent-decoy-prefix" }, required = true, description = "If present, any hits to proteins that begin with this string will be considered \"independent decoys,\" for the purpose of FDR estimation. See: https://pubmed.ncbi.nlm.nih.gov/21876204/")
+	@CommandLine.Option(names = { "-i", "--independent-decoy-prefix" }, required = false, description = "If present, any hits to proteins that begin with this string will be considered \"independent decoys,\" for the purpose of FDR estimation. See: https://pubmed.ncbi.nlm.nih.gov/21876204/")
 	private String independentDecoyPrefix;
 
 	@CommandLine.Option(names = { "-v", "--verbose" }, required = false, description = "If this parameters is present, error messages will include a full stacktrace.")
@@ -90,6 +90,8 @@ public class MainProgram implements Runnable {
 		cp.setMagnumConfFile( magnumFile );
 		cp.setPepXMLFile( pepXMLFile );
 		cp.setLimelightXMLOutputFile( outFile );
+		cp.setImportDecoys(importDecoys);
+		cp.setIndependentDecoyPrefix(independentDecoyPrefix);
 
 		try {
 			ConverterRunner.createInstance().convertMagnumTPPToLimelightXML(cp);

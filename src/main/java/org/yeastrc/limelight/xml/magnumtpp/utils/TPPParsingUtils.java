@@ -261,7 +261,7 @@ public class TPPParsingUtils {
 
 			psm.setPeptideProphetProbability(getPeptideProphetProbabilityForSearchHit(searchHit));
 
-
+			// this happens for all search hits not listed first for a scan
 			if (psm.getPeptideProphetProbability() == null) {
 				return null;
 			}

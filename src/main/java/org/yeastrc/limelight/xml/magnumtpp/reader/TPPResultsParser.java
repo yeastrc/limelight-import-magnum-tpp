@@ -85,14 +85,6 @@ public class TPPResultsParser {
 							
 							psm = TPPParsingUtils.getPsmFromSearchHit( searchHit, charge, scanNumber, neutralMass, retentionTime );
 
-							if(conversionParameters.getImportDecoys() &&
-									TPPParsingUtils.searchHitIsDecoy( searchHit, magnumParameters.getDecoyPrefix() ) ) {
-								psm.setDecoy(true);
-							} else if(conversionParameters.getIndependentDecoyPrefix() != null &&
-									TPPParsingUtils.searchHitIsIndependentDecoy( searchHit, conversionParameters.getIndependentDecoyPrefix() ) ) {
-								psm.setIndependentDecoy(true);
-							}
-
 						} catch( Throwable t) {
 							
 							System.err.println( "Error reading PSM from pepXML. Error: " + t.getMessage() );
@@ -101,6 +93,15 @@ public class TPPResultsParser {
 						}
 						
 						if( psm != null ) {
+
+							if(conversionParameters.getImportDecoys() &&
+									TPPParsingUtils.searchHitIsDecoy( searchHit, magnumParameters.getDecoyPrefix() ) ) {
+								psm.setDecoy(true);
+							} else if(conversionParameters.getIndependentDecoyPrefix() != null &&
+									TPPParsingUtils.searchHitIsIndependentDecoy( searchHit, conversionParameters.getIndependentDecoyPrefix() ) ) {
+								psm.setIndependentDecoy(true);
+							}
+
 							TPPReportedPeptide tppRp = ReportedPeptideUtils.getTPPReportedPeptideForTPPPSM( psm );
 							
 							if( !results.getPeptidePSMMap().containsKey( tppRp ) )

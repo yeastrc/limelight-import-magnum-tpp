@@ -12,8 +12,8 @@ public class TPPPSM {
 	private BigDecimal ppmError;
 	private BigDecimal massDiff;
 	private Collection<BigDecimal> reporterIons;
-	private Boolean isDecoy;
-	private Boolean isIndependentDecoy;
+	private boolean isDecoy = false;
+	private boolean isIndependentDecoy = false;
 
 	@Override
 	public String toString() {
