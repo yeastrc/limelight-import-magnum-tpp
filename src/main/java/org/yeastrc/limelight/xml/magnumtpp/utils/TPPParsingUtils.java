@@ -120,14 +120,14 @@ public class TPPParsingUtils {
 	 * @param searchHit
 	 * @return
 	 */
-	public static boolean searchHitIsDecoy( SearchHit searchHit ) {
+	public static boolean searchHitIsDecoy( SearchHit searchHit, String decoyPrefix ) {
 		
 		String protein = searchHit.getProtein();
-		if( protein.startsWith( "DECOY_" ) ) {
+		if( protein.startsWith( decoyPrefix ) ) {
 			
 			if( searchHit.getAlternativeProtein() != null ) {
 				for( AltProteinDataType ap : searchHit.getAlternativeProtein() ) {
-					if( !ap.getProtein().startsWith( "DECOY_" ) ) {
+					if( !ap.getProtein().startsWith( decoyPrefix ) ) {
 						return false;
 					}
 				}
@@ -136,6 +136,33 @@ public class TPPParsingUtils {
 			return true;			
 		}
 		
+		return false;
+	}
+
+	/**
+	 * Return true if this searchHit is an independent decoy. This means that it only matches
+	 * independent decoy proteins.
+	 *
+	 * @param searchHit
+	 * @param independentDecoyPrefix
+	 * @return
+	 */
+	public static boolean searchHitIsIndependentDecoy( SearchHit searchHit, String independentDecoyPrefix ) {
+
+		String protein = searchHit.getProtein();
+		if( protein.startsWith( independentDecoyPrefix ) ) {
+
+			if( searchHit.getAlternativeProtein() != null ) {
+				for( AltProteinDataType ap : searchHit.getAlternativeProtein() ) {
+					if( !ap.getProtein().startsWith( independentDecoyPrefix ) ) {
+						return false;
+					}
+				}
+			}
+
+			return true;
+		}
+
 		return false;
 	}
 	
