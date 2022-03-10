@@ -142,6 +142,9 @@ public class MatchedProteinsBuilder {
 	 * @return
 	 */
 	private boolean isProteinDecoy(Collection<FastaProteinAnnotation> proteins, String decoyPrefix) {
+
+		if(decoyPrefix == null) { return false; }
+
 		for(FastaProteinAnnotation anno : proteins) {
 			if(!(anno.getName().startsWith(decoyPrefix))) {
 				return false;
@@ -158,6 +161,9 @@ public class MatchedProteinsBuilder {
 	 * @return
 	 */
 	private boolean isProteinIndependentDecoy(Collection<FastaProteinAnnotation> proteins, String independentDecoyPrefix) {
+
+		if(independentDecoyPrefix == null) { return false; }
+
 		for(FastaProteinAnnotation anno : proteins) {
 			if(!(anno.getName().startsWith(independentDecoyPrefix))) {
 				return false;
