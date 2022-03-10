@@ -31,27 +31,4 @@ public class HashUtils {
         return messageDigest.digest();
     }
 
-    /**
-     * Convert a byte array to a hex string
-     *
-     * @param hashBytes
-     * @return
-     */
-    public static String get_HashBytes_As_HexString( byte[] hashBytes ) {
-
-        StringBuilder hashBytesAsHexSB = new StringBuilder( hashBytes.length * 2 + 2 );
-
-        for ( int i = 0; i < hashBytes.length; i++ ) {
-            String byteAsHex = Integer.toHexString( Byte.toUnsignedInt( hashBytes[ i ] ) );
-            if ( byteAsHex.length() == 1 ) {
-                hashBytesAsHexSB.append( "0" ); //  Leading zero dropped by 'toHexString' so add here
-            }
-            hashBytesAsHexSB.append( byteAsHex );
-        }
-
-        String result = hashBytesAsHexSB.toString();
-
-        return result;
-    }
-
 }

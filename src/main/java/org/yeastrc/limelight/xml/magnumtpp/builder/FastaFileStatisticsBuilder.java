@@ -1,8 +1,6 @@
 package org.yeastrc.limelight.xml.magnumtpp.builder;
 
-import org.yeastrc.limelight.limelight_import.api.xml_dto.FastaFileStatistics;
 import org.yeastrc.limelight.limelight_import.api.xml_dto.LimelightInput;
-import org.yeastrc.limelight.limelight_import.api.xml_dto.MatchedProteins;
 import org.yeastrc.limelight.xml.magnumtpp.utils.HashUtils;
 import org.yeastrc.proteomics.fasta.FASTAEntry;
 import org.yeastrc.proteomics.fasta.FASTAFileParser;
@@ -39,7 +37,7 @@ public class FastaFileStatisticsBuilder {
         org.yeastrc.limelight.limelight_import.api.xml_dto.FastaFileStatistics xmlFastaFileStatistics = new org.yeastrc.limelight.limelight_import.api.xml_dto.FastaFileStatistics();
         limelightInputRoot.setFastaFileStatistics(xmlFastaFileStatistics);
 
-        xmlFastaFileStatistics.setSHA384(fastaFileStatistics.getSha384HashString());
+        xmlFastaFileStatistics.setSHA384(fastaFileStatistics.getSha384Hash());
         xmlFastaFileStatistics.setNumTargets(BigInteger.valueOf(fastaFileStatistics.getTargetCount()));
         xmlFastaFileStatistics.setNumDecoys(BigInteger.valueOf(fastaFileStatistics.getDecoyCount()));
         xmlFastaFileStatistics.setNumIndependentDecoys(BigInteger.valueOf(fastaFileStatistics.getIndependentDecoyCount()));
@@ -68,9 +66,7 @@ public class FastaFileStatisticsBuilder {
             }
         }
 
-        String fastaFileSha384Hash = HashUtils.get_HashBytes_As_HexString(
-                HashUtils.compute_file_sha_384_hash(fastaFile)
-        );
+        byte[] fastaFileSha384Hash = HashUtils.compute_file_sha_384_hash(fastaFile);
 
         return new FastaFileStatistics(targetCount, decoyCount, independentDecoyCount, fastaFileSha384Hash);
     }
@@ -122,13 +118,13 @@ public class FastaFileStatisticsBuilder {
         private int targetCount;
         private int decoyCount;
         private int independentDecoyCount;
-        String sha384HashString;
+        byte[] sha384Hash;
 
-        public FastaFileStatistics(int targetCount, int decoyCount, int independentDecoyCount, String sha384HashString) {
+        public FastaFileStatistics(int targetCount, int decoyCount, int independentDecoyCount, byte[] sha384Hash) {
             this.targetCount = targetCount;
             this.decoyCount = decoyCount;
             this.independentDecoyCount = independentDecoyCount;
-            this.sha384HashString = sha384HashString;
+            this.sha384Hash = sha384Hash;
         }
 
         public int getTargetCount() {
@@ -143,8 +139,8 @@ public class FastaFileStatisticsBuilder {
             return independentDecoyCount;
         }
 
-        public String getSha384HashString() {
-            return sha384HashString;
+        public byte[] getSha384Hash() {
+            return sha384Hash;
         }
     }
 
