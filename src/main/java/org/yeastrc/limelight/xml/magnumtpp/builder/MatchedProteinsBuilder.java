@@ -108,6 +108,13 @@ public class MatchedProteinsBuilder {
 				} else {
 					xmlProtein.setIsDecoy(false);
 				}
+			} else {
+
+				// don't import this protein at all if it's a decoy and we're not importing decoys
+				// this can happen when a peptide matches a target and decoy protein
+				if(isProteinDecoy(proteins.get( sequence ), decoyPrefix)) {
+					continue;
+				}
 			}
 
 			if(importIndependentDecoys) {
