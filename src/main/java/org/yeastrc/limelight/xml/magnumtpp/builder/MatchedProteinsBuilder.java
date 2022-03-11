@@ -120,6 +120,11 @@ public class MatchedProteinsBuilder {
 
 			for( FastaProteinAnnotation anno : proteins.get( sequence ) ) {
 
+				// do not add decoy annotations if we are not importing decoys
+				if(!importDecoys && anno.getName().startsWith(decoyPrefix)) {
+					continue;
+				}
+
 				MatchedProteinLabel xmlMatchedProteinLabel = new MatchedProteinLabel();
 				xmlProtein.getMatchedProteinLabel().add( xmlMatchedProteinLabel );
 
