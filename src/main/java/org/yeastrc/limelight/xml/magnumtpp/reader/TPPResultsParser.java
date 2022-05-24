@@ -23,9 +23,7 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.yeastrc.limelight.xml.magnumtpp.objects.TPPPSM;
-import org.yeastrc.limelight.xml.magnumtpp.objects.TPPReportedPeptide;
-import org.yeastrc.limelight.xml.magnumtpp.objects.TPPResults;
+import org.yeastrc.limelight.xml.magnumtpp.objects.*;
 import org.yeastrc.limelight.xml.magnumtpp.utils.ReportedPeptideUtils;
 import org.yeastrc.limelight.xml.magnumtpp.utils.TPPParsingUtils;
 
@@ -42,7 +40,7 @@ import net.systemsbiology.regis_web.pepxml.MsmsPipelineAnalysis.MsmsRunSummary.S
  */
 public class TPPResultsParser {
 
-	public static TPPResults getTPPResults( File pepXMLFile ) throws Throwable {
+	public static TPPResults getTPPResults(File pepXMLFile, ConversionParameters conversionParameters, MagnumParameters magnumParameters) throws Throwable {
 
 		Map<TPPReportedPeptide,Map<Integer,TPPPSM>> resultMap = new HashMap<>();
 				
@@ -77,7 +75,7 @@ public class TPPResultsParser {
 					for( SearchHit searchHit : searchResult.getSearchHit() ) {
 						
 						// do not include decoy hits
-						if( TPPParsingUtils.searchHitIsDecoy( searchHit ) ) {
+						if( !conversionParameters.getImportDecoys() && TPPParsingUtils.searchHitIsDecoy( searchHit, magnumParameters.getDecoyPrefix() ) ) {
 							continue;
 						}
 						
@@ -86,7 +84,7 @@ public class TPPResultsParser {
 						try {
 							
 							psm = TPPParsingUtils.getPsmFromSearchHit( searchHit, charge, scanNumber, neutralMass, retentionTime );
-							
+
 						} catch( Throwable t) {
 							
 							System.err.println( "Error reading PSM from pepXML. Error: " + t.getMessage() );
@@ -95,6 +93,15 @@ public class TPPResultsParser {
 						}
 						
 						if( psm != null ) {
+
+							if(conversionParameters.getImportDecoys() &&
+									TPPParsingUtils.searchHitIsDecoy( searchHit, magnumParameters.getDecoyPrefix() ) ) {
+								psm.setDecoy(true);
+							} else if(conversionParameters.getIndependentDecoyPrefix() != null &&
+									TPPParsingUtils.searchHitIsIndependentDecoy( searchHit, conversionParameters.getIndependentDecoyPrefix() ) ) {
+								psm.setIndependentDecoy(true);
+							}
+
 							TPPReportedPeptide tppRp = ReportedPeptideUtils.getTPPReportedPeptideForTPPPSM( psm );
 							
 							if( !results.getPeptidePSMMap().containsKey( tppRp ) )

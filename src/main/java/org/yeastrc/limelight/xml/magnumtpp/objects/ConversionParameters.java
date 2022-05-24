@@ -82,11 +82,29 @@ public class ConversionParameters {
 	public void setConversionProgramInfo(ConversionProgramInfo conversionProgramInfo) {
 		this.conversionProgramInfo = conversionProgramInfo;
 	}
-	
+
+	public Boolean getImportDecoys() {
+		return importDecoys;
+	}
+
+	public void setImportDecoys(Boolean importDecoys) {
+		this.importDecoys = importDecoys;
+	}
+
+	public String getIndependentDecoyPrefix() {
+		return independentDecoyPrefix;
+	}
+
+	public void setIndependentDecoyPrefix(String independentDecoyPrefix) {
+		this.independentDecoyPrefix = independentDecoyPrefix;
+	}
+
 	private File fastaFile;
 	private File magnumConfFile;
 	private File limelightXMLOutputFile;
 	private File pepXMLFile;
 	private ConversionProgramInfo conversionProgramInfo;
+	private boolean importDecoys = false;
+	private String independentDecoyPrefix;
 	
 }

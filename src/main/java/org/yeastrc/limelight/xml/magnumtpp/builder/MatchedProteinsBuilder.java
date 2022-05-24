@@ -40,7 +40,7 @@ public class MatchedProteinsBuilder {
 	 * @param reportedPeptides
 	 * @throws Exception
 	 */
-	public void buildMatchedProteins( LimelightInput limelightInputRoot, File fastaFile, Collection<TPPReportedPeptide> reportedPeptides ) throws Exception {
+	public void buildMatchedProteins( LimelightInput limelightInputRoot, File fastaFile, Collection<TPPReportedPeptide> reportedPeptides, boolean importDecoys, String decoyPrefix, boolean importIndependentDecoys, String independentDecoyPrefix ) throws Exception {
 
 		System.err.print( " Matching peptides to proteins..." );
 
@@ -51,7 +51,7 @@ public class MatchedProteinsBuilder {
 		Map<String, Collection<FastaProteinAnnotation>> proteins = getProteins( nakedPeptideObjects, fastaFile );
 
 		// create the XML and add to root element
-		buildAndAddMatchedProteinsToXML( limelightInputRoot, proteins );
+		buildAndAddMatchedProteinsToXML( limelightInputRoot, proteins, importDecoys, decoyPrefix, importIndependentDecoys, independentDecoyPrefix );
 
 	}
 
@@ -88,7 +88,7 @@ public class MatchedProteinsBuilder {
 	 * @param proteins
 	 * @throws Exception
 	 */
-	private void buildAndAddMatchedProteinsToXML( LimelightInput limelightInputRoot, Map<String, Collection<FastaProteinAnnotation>> proteins ) throws Exception {
+	private void buildAndAddMatchedProteinsToXML( LimelightInput limelightInputRoot, Map<String, Collection<FastaProteinAnnotation>> proteins, boolean importDecoys, String decoyPrefix, boolean importIndependentDecoys, String independentDecoyPrefix ) throws Exception {
 
 		MatchedProteins xmlMatchedProteins = new MatchedProteins();
 		limelightInputRoot.setMatchedProteins( xmlMatchedProteins );
@@ -97,12 +97,39 @@ public class MatchedProteinsBuilder {
 
 			if( proteins.get( sequence ).isEmpty() ) continue;
 
+			// don't import this protein at all if it's a decoy and we're not importing decoys
+			if(!importDecoys && isProteinDecoy(proteins.get( sequence ), decoyPrefix)) {
+				continue;
+			}
+
 			MatchedProtein xmlProtein = new MatchedProtein();
 			xmlMatchedProteins.getMatchedProtein().add( xmlProtein );
 
 			xmlProtein.setSequence( sequence );
 
+			if(importDecoys) {
+				if(isProteinDecoy(proteins.get( sequence ), decoyPrefix)) {
+					xmlProtein.setIsDecoy(true);
+				} else {
+					xmlProtein.setIsDecoy(false);
+				}
+			}
+
+			if(importIndependentDecoys) {
+				if(isProteinIndependentDecoy(proteins.get( sequence ), independentDecoyPrefix)) {
+					xmlProtein.setIsIndependentDecoy(true);
+				} else {
+					xmlProtein.setIsIndependentDecoy(false);
+				}
+			}
+
 			for( FastaProteinAnnotation anno : proteins.get( sequence ) ) {
+
+				// do not add decoy annotations if we are not importing decoys
+				if(!importDecoys && anno.getName().startsWith(decoyPrefix)) {
+					continue;
+				}
+
 				MatchedProteinLabel xmlMatchedProteinLabel = new MatchedProteinLabel();
 				xmlProtein.getMatchedProteinLabel().add( xmlMatchedProteinLabel );
 
@@ -115,6 +142,44 @@ public class MatchedProteinsBuilder {
 					xmlMatchedProteinLabel.setNcbiTaxonomyId( new BigInteger( anno.getTaxonomId().toString() ) );
 			}
 		}
+	}
+
+	/**
+	 * Return true if all fasta annotation protein names start with decoy prefix
+	 *
+	 * @param proteins
+	 * @param decoyPrefix
+	 * @return
+	 */
+	private boolean isProteinDecoy(Collection<FastaProteinAnnotation> proteins, String decoyPrefix) {
+
+		if(decoyPrefix == null) { return false; }
+
+		for(FastaProteinAnnotation anno : proteins) {
+			if(!(anno.getName().startsWith(decoyPrefix))) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * Return true if all fasta annotation protein names start with independent decoy prefix
+	 *
+	 * @param proteins
+	 * @param independentDecoyPrefix
+	 * @return
+	 */
+	private boolean isProteinIndependentDecoy(Collection<FastaProteinAnnotation> proteins, String independentDecoyPrefix) {
+
+		if(independentDecoyPrefix == null) { return false; }
+
+		for(FastaProteinAnnotation anno : proteins) {
+			if(!(anno.getName().startsWith(independentDecoyPrefix))) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 

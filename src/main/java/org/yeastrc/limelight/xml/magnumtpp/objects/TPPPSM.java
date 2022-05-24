@@ -12,7 +12,8 @@ public class TPPPSM {
 	private BigDecimal ppmError;
 	private BigDecimal massDiff;
 	private Collection<BigDecimal> reporterIons;
-
+	private boolean isDecoy = false;
+	private boolean isIndependentDecoy = false;
 
 	@Override
 	public String toString() {
@@ -23,6 +24,8 @@ public class TPPPSM {
 				", ppmError=" + ppmError +
 				", massDiff=" + massDiff +
 				", reporterIons=" + reporterIons +
+				", isDecoy=" + isDecoy +
+				", isIndependentDecoy=" + isIndependentDecoy +
 				", peptideProphetProbability=" + peptideProphetProbability +
 				", interProphetProbability=" + interProphetProbability +
 				", scanNumber=" + scanNumber +
@@ -33,6 +36,22 @@ public class TPPPSM {
 				", openModification=" + openModification +
 				", modifications=" + modifications +
 				'}';
+	}
+
+	public Boolean getDecoy() {
+		return isDecoy;
+	}
+
+	public void setDecoy(Boolean decoy) {
+		isDecoy = decoy;
+	}
+
+	public Boolean getIndependentDecoy() {
+		return isIndependentDecoy;
+	}
+
+	public void setIndependentDecoy(Boolean independentDecoy) {
+		isIndependentDecoy = independentDecoy;
 	}
 
 	public BigDecimal getMassDiff() {
