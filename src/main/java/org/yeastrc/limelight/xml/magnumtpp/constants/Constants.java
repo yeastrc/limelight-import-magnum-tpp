@@ -8,6 +8,8 @@ public class Constants {
 
 	public static final String CONVERSION_PROGRAM_NAME = "magnumTPP2LimelightXML.jar";
 	public static final String CONVERSION_PROGRAM_URI = "https://github.com/yeastrc/limelight-import-magnum-tpp";
-	public static final String CONVERSION_PROGRAM_VERSION = "3.0.1";
+	
+	//  Removed as now retrieved from file which is populated from environment variable which is populated from GIT release tag
+//	public static final String CONVERSION_PROGRAM_VERSION = "3.0.1";
 	
 }
